@@ -3082,8 +3082,21 @@ Sigma_Exit:
 
 	case 226: // M226 P<pin number> S<pin state>- Wait until the specified pin reaches the state required
 	{
+		int pin_number = -1;
+		
       if(code_seen('P')){
         int pin_number = code_value(); // pin number
+      }
+      
+      if(code_seen('Z')){
+      	int min_or_max = code_value();
+      	if(min_or_max==1)
+        	pin_number = Z_MAX_PIN; // pin number
+     	else
+        	pin_number = Z_MIN_PIN; // pin number
+      }
+
+      if(pin_number>=0){
         int pin_state = -1; // required pin state - default is inverted
 
         if(code_seen('S')) pin_state = code_value(); // required pin state
